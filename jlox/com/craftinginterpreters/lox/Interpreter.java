@@ -4,13 +4,16 @@ import com.craftinginterpreters.lox.Expr.Binary;
 import com.craftinginterpreters.lox.Expr.Grouping;
 import com.craftinginterpreters.lox.Expr.Literal;
 import com.craftinginterpreters.lox.Expr.Unary;
+import com.craftinginterpreters.lox.Expr.Variable;
 import com.craftinginterpreters.lox.Stmt.Expression;
 import com.craftinginterpreters.lox.Stmt.Print;
+import com.craftinginterpreters.lox.Stmt.Var;
 
 import java.util.List;
 
 class Interpreter implements Expr.Visitor<Object>,
                              Stmt.Visitor<Void> {
+  private Environment environment = new Environment();
 
   private Object evaluate(Expr expr) {
     return expr.accept(this);
@@ -111,6 +114,11 @@ class Interpreter implements Expr.Visitor<Object>,
     return null;
   }
 
+  @Override
+  public Object visitVariableExpr(Expr.Variable expr) {
+    return environment.get(expr.name);
+  }
+
   private String stringify(Object object) {
     if (object == null) return "nil";
 
@@ -151,4 +159,16 @@ class Interpreter implements Expr.Visitor<Object>,
     System.out.println(stringify(value));
     return null;
   }
+
+  @Override
+  public Void visitVarStmt(Stmt.Var stmt) {
+    Object value = null;
+    if (stmt.initializer != null) {
+      value = evaluate(stmt.initializer);
+    }
+
+    environment.define(stmt.name.lexeme, value);
+    return null;
+  }
+
 }
