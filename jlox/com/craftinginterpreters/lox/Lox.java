@@ -20,14 +20,14 @@ public class Lox {
     // System.out.println("Tokens: " + tokens.toString());
 
     Parser parser = new Parser(tokens);
-    Expr expression = parser.parse();
+    List<Stmt> statements = parser.parse();
 
     // Stop if there was a syntax error.
     if (hadError) return;
 
     // System.out.println("AST: " + new AstPrinter().print(expression));
     // System.out.println(expression.accept(new Interpreter()));
-    interpreter.interpret(expression);
+    interpreter.interpret(statements);
   }
 
   public static void runFile(String path) throws IOException {
