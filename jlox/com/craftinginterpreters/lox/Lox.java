@@ -13,7 +13,7 @@ public class Lox {
   static boolean hadError = false;
   static boolean hadRuntimeError = false;
 
-  private static void run(String source) {
+  private static void run(String source, boolean printExpressionResults) {
     Scanner scanner = new Scanner(source);
     List<Token> tokens = scanner.scanTokens();
 
@@ -25,6 +25,16 @@ public class Lox {
     // Stop if there was a syntax error.
     if (hadError) return;
 
+    if (printExpressionResults) {
+      for (int i = 0; i < statements.size(); i++) {
+        Stmt statement = statements.get(i);
+        if (statement instanceof Stmt.Expression) {
+          Stmt.Print printStatement = new Stmt.Print(((Stmt.Expression)statement).expression);
+          statements.set(i, printStatement);
+        }
+      }
+    }
+
     // for (Stmt stmt : statements) {
     //   // if (stmt instanceof Stmt.Expression) {
     //   //   System.out.println("AST: " + new AstPrinter().print(stmt.expression));
@@ -32,6 +42,10 @@ public class Lox {
     //   System.out.println(stmt.accept(interpreter));
     // }
     interpreter.interpret(statements);
+  }
+
+  private static void run(String source) {
+    run(source, false);
   }
 
   public static void runFile(String path) throws IOException {
@@ -51,7 +65,7 @@ public class Lox {
       System.out.print("> ");
       String line = reader.readLine();
       if (line == null) break;
-      run(line);
+      run(line, true);
       hadError = false;
     }
   }
