@@ -25,8 +25,12 @@ public class Lox {
     // Stop if there was a syntax error.
     if (hadError) return;
 
-    // System.out.println("AST: " + new AstPrinter().print(expression));
-    // System.out.println(expression.accept(new Interpreter()));
+    // for (Stmt stmt : statements) {
+    //   // if (stmt instanceof Stmt.Expression) {
+    //   //   System.out.println("AST: " + new AstPrinter().print(stmt.expression));
+    //   // }
+    //   System.out.println(stmt.accept(interpreter));
+    // }
     interpreter.interpret(statements);
   }
 
