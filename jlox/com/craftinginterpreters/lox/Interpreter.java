@@ -96,6 +96,12 @@ class Interpreter implements Expr.Visitor<Object>,
           throw new RuntimeError(expr.operator, "Divide by zero.");
         }
         return (double)left / (double)right;
+      case MOD:
+        checkNumberOperands(expr.operator, left, right);
+        if (right.equals((double)0)) {
+          throw new RuntimeError(expr.operator, "Divide by zero.");
+        }
+        return (double)left % (double)right;
       case STAR:
         checkNumberOperands(expr.operator, left, right);
         return (double)left * (double)right;
