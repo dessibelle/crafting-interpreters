@@ -6,6 +6,7 @@ import com.craftinginterpreters.lox.Expr.Literal;
 import com.craftinginterpreters.lox.Expr.Unary;
 import com.craftinginterpreters.lox.Stmt.Expression;
 import com.craftinginterpreters.lox.Stmt.Print;
+import com.craftinginterpreters.lox.Stmt.PrintLine;
 
 
 import java.util.List;
@@ -248,6 +249,13 @@ class Interpreter implements Expr.Visitor<Object>,
 
   @Override
   public Void visitPrintStmt(Print stmt) {
+    Object value = evaluate(stmt.expression);
+    System.out.print(stringify(value));
+    return null;
+  }
+
+  @Override
+  public Void visitPrintLineStmt(PrintLine stmt) {
     Object value = evaluate(stmt.expression);
     System.out.println(stringify(value));
     return null;

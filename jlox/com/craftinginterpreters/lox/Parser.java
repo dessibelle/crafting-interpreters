@@ -68,6 +68,7 @@ class Parser {
         case IF:
         case WHILE:
         case PRINT:
+        case PRINTLINE:
         case RETURN:
           return;
       }
@@ -244,6 +245,12 @@ class Parser {
     return new Stmt.Print(value);
   }
 
+  private Stmt printLineStatement() {
+    Expr value = expression();
+    consume(SEMICOLON, "Expect ';' after value.");
+    return new Stmt.PrintLine(value);
+  }
+
   private Stmt returnStatement() {
     Token keyword = previous();
     Expr value = null;
@@ -276,6 +283,7 @@ class Parser {
     if (match(FOR)) return forStatement();
     if (match(IF)) return ifStatement();
     if (match(PRINT)) return printStatement();
+    if (match(PRINTLINE)) return printLineStatement();
     if (match(RETURN)) return returnStatement();
     if (match(WHILE)) return whileStatement();
     if (match(LEFT_BRACE)) return new Stmt.Block(block());
