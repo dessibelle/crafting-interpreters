@@ -25,6 +25,9 @@ public class Lox {
     // Stop if there was a syntax error.
     if (hadError) return;
 
+    Resolver resolver = new Resolver(interpreter);
+    resolver.resolve(statements);
+
     if (printExpressionResults) {
       for (int i = 0; i < statements.size(); i++) {
         Stmt statement = statements.get(i);
@@ -41,6 +44,10 @@ public class Lox {
     //   // }
     //   System.out.println(stmt.accept(interpreter));
     // }
+
+    // Stop if there was a resolution error.
+    if (hadError) return;
+  
     interpreter.interpret(statements);
   }
 
