@@ -1,0 +1,74 @@
+
+fun is_leap_year_julian(year){
+    return year % 4 == 0;
+}
+
+fun is_leap_year_gregorian(year){
+
+    if (year == 0){
+        //Handles year 0 as year 1.
+        return is_leap_year(year +1 , "gregorian");
+    }
+    if (year % 400 == 0){
+        return true;
+    }
+    if (year % 100 == 0){
+        return false;
+    }
+    return year % 4 == 0;
+}
+
+fun is_leap_year(year, type){
+    if(type == "gregorian"){
+        return is_leap_year_gregorian(year);
+    }
+    else if (type == "julian"){
+        return is_leap_year_julian(year);
+    }
+    return nil;
+}
+
+
+fun test_gregorian(){
+    print "handles every 4th: ";
+    println true == is_leap_year(2020, "gregorian");
+
+    print "handles non leap years: ";
+    println false == is_leap_year(2022, "gregorian");
+
+    print "handles even 100s: ";
+    println false == is_leap_year(1900, "gregorian");
+
+    print "handles even 400s: ";
+    println true == is_leap_year(1600, "gregorian");
+
+    // print "handles year 0: ";
+    // println false == is_leap_year(0, "gregorian");
+
+    print "handles start of calendar: ";
+    println nil == is_leap_year(1581, "gregorian");
+}
+
+fun test_julian(){
+    print "handles every 4th (8 CE): ";
+    println true == is_leap_year(8, "julian");
+    print "handles every 4th (12 CE): ";
+    println true == is_leap_year(12, "julian");
+
+    print "handles non leap years (9 CE): ";    
+    println false == is_leap_year(9, "julian");
+    print "handles non leap years (10 CE): ";    
+    println false == is_leap_year(10, "julian");
+    print "handles non leap years (11 CE): ";    
+    println false == is_leap_year(11, "julian");
+
+
+    print "handles year 0: ";
+    println false == is_leap_year(0, "julian");
+
+    print "handles start of calendar: ";
+    println nil == is_leap_year(-46, "julian");
+}
+
+test_gregorian();
+test_julian();
